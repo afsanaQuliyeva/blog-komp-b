@@ -4,6 +4,7 @@
         <section class="content">
             <div class="mt-3">
                 <a href="{{route('categories.create')}}" class="btn btn-warning">Yeni kateqoriya</a>
+                <a href="{{route('categories.trash')}}" class="btn btn-dark">Trash</a>
             </div>
             <div class="card mt-3">
                 <div class="card-header">
@@ -28,6 +29,7 @@
                                 <td>{{$category->created_at->diffForHumans()}}</td>
                                 <td>
                                     <a href="{{route('categories.edit', $category->id)}}" class="btn btn-info">Dəyişdir</a>
+                                    <a href="{{route('categories.delete', $category->id)}}" class="btn btn-danger">Sil</a>
                                 </td>
                             </tr>
                         @endforeach

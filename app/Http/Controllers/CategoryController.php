@@ -39,12 +39,13 @@ class CategoryController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $validated = $request->validate([
-            'category_name' => 'required|unique:categories|max:255',
-            'slug' => 'required|max:255',
-        ]);
+//        $validated = $request->validate([
+//            'category_name' => 'required|unique:categories|max:255',
+//            'slug' => 'required|max:255',
+//        ]);
+        $validated = $request->validated();
         $validated = Arr::add($validated, 'created_at', Carbon::now());
         Category::insert($validated);
         return Redirect::route('categories.index');
@@ -69,7 +70,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
         //Select * from Category where id = $id
         //1 -> Laravel
         return view('admin.categories.edit', compact('category'));
@@ -82,9 +83,16 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return Response
      */
+
     public function update(CategoryRequest $request, $id)
     {
         $validated = $request->validated();
+        //dd($validated);
+        $validated = Arr::add($validated, 'updated_at', Carbon::now());
+        $success = Category::findOrFail($id)->update($validated);
+        if($success) {
+            return Redirect::route('categories.index');
+        }
 
     }
 
@@ -96,6 +104,28 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $success = Category::onlyTrashed()->findOrFail($id)->forceDelete();
+        if($success) {
+            return Redirect::route('categories.trash');
+        }
+    }
+
+    public function delete($id) {
+        $success = Category::findOrFail($id)->delete();
+        if($success) {
+            return Redirect::route('categories.index');
+        }
+    }
+
+    public function showTrash() {
+        $categories = Category::onlyTrashed()->latest()->get();
+        return view('admin.categories.trash', compact('categories'));
+    }
+
+    public function restore($id) {
+        $success = Category::onlyTrashed()->findOrFail($id)->restore();
+        if($success) {
+            return Redirect::route('categories.index');
+        }
     }
 }

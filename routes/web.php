@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
@@ -15,7 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [BaseController::class, 'index'])->name('main');
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [BaseController::class, 'showDashboard'])->name('dashboard');
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
+    Route::get('/', [BaseController::class, 'index'])->name('main');
+    Route::get('/dashboard', [BaseController::class, 'showDashboard'])->name('dashboard');
+    Route::get('categories/trash', [CategoryController::class, 'showTrash'])->name('categories.trash');
+    Route::get('categories/restore/{id}', [CategoryController::class, 'restore'])->name('categories.restore');
+    Route::resource('categories', CategoryController::class);
+    Route::get('categories/delete/{id}', [CategoryController::class, 'delete'])->name('categories.delete');
+    Route::resource('articles' , ArticleController::class);
+});
 
-Route::resource('categories', CategoryController::class);
+
+

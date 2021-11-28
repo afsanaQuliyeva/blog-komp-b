@@ -51,6 +51,13 @@
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <form action="{{route('logout')}}" method="post">
+                    @csrf
+                    <a href="{{route('logout')}}" class="btn btn-dark" onclick="event.preventDefault(); this.closest('form').submit();">Logout</a>
+                </form>
+            </li>
+            </li>
             <!-- Navbar Search -->
             <li class="nav-item">
                 <a class="nav-link" data-widget="navbar-search" href="#" role="button">

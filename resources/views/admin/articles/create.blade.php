@@ -31,18 +31,23 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="slug" class="form-label">Slug</label>
-                            <input type="text" class="form-control" id="slug" name="slug" value="{{old('slug')}}">
-                            @error('slug')
-                            <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
                             <label for="image" class="form-label">Şəkil</label>
-                            <input type="file" class="form-control" id="image" name="image" value="{{old('image')}}">
+                            <input type="file" class="form-control" id="image" name="image" >
                             @error('image')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Kateqoriyalar</label>
+                            <select name="categories[]" id="" class="form-control" multiple size="8">
+                                @foreach($categories as $category)
+                                    <option value="{{$category->id}}"
+                                        {{is_array(old('categories')) && in_array($category->id, old('categories')) ? 'selected' : ''}}
+                                    >
+                                        {{$category->category_name}}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Save</button>

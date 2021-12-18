@@ -17,22 +17,25 @@
                             <th scope="col">#</th>
                             <th scope="col">Məqalənin başlığı</th>
                             <th scope="col">Açıqlama</th>
+                            <th>Slug</th>
                             <th scope="col">Foto</th>
                             <th>Əməliyyatlar</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @php($no = 1)
+{{--                        @php($no = 1)--}}
                         @foreach($articles as $article)
                             <tr>
-                                <th scope="row">{{ $no++ }}</th>
+{{--                                <th scope="row">{{ $no++ }}</th>--}}
+                                <th scope="row">{{ $articles->firstItem() + $loop->index  }}</th>
                                 <td>{{$article->title}}</td>
                                 <td>{{$article->desc}}</td>
+                                <td>{{$article->slug}}</td>
                                 <td>
-                                    <img src="{{$article->image}}" alt="" width="200">
+                                    <img src="{{asset('uploads/'.$article->image)}}" alt="" width="200">
                                 </td>
                                 <td>
-                                    <a href="" class="btn btn-info">Dəyişdir</a>
+                                    <a href="{{route('articles.edit', $article->id)}}" class="btn btn-info">Dəyişdir</a>
                                     <a href="" class="btn btn-danger">Sil</a>
                                     <a href="{{route('articles.show', $article->id)}}" class="btn btn-success">Məqaləni göstər</a>
                                 </td>
@@ -41,6 +44,9 @@
 
                         </tbody>
                     </table>
+                    <div>
+                        {{$articles->links()}}
+                    </div>
                 </div>
             </div>
 

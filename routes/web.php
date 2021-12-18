@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', [BaseController::class, 'index'])->name('main');
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
-    Route::get('/', [BaseController::class, 'index'])->name('main');
     Route::get('/dashboard', [BaseController::class, 'showDashboard'])->name('dashboard');
     Route::get('categories/trash', [CategoryController::class, 'showTrash'])->name('categories.trash');
     Route::get('categories/restore/{id}', [CategoryController::class, 'restore'])->name('categories.restore');

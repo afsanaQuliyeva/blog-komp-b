@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,7 +12,8 @@ use Illuminate\Support\Facades\Redirect;
 class BaseController extends Controller
 {
     public function index() {
-        return view('homepage');
+        $articles = Article::latest()->paginate(Article::PAGE_COUNT);
+        return view('homepage', compact('articles'));
     }
 
     public function showDashboard() {
